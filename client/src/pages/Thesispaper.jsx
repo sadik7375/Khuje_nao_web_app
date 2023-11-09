@@ -2,6 +2,7 @@
 import Navbar from '../components/Navbar';
 import Footer from '../components/footer';
 import hlw from './hlw.png'
+import { Link } from 'react-router-dom';
 import Searchbar from '../components/Searchbar';
 const Thesispaper = () => {
     return (
@@ -33,7 +34,7 @@ const Thesispaper = () => {
   </div>
   
        
-          <div className="mt-4 mx-4 ml- p-4">
+  <Link to="/projectdetails"> <div className="mt-4 mx-4 ml- p-4">
       <div className="max-w-screen-lg mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-1 gap-4">
           {/* First Row */}
@@ -130,6 +131,7 @@ const Thesispaper = () => {
         </div>
       </div>
     </div>
+    </Link>
     <Footer></Footer>
         </div>
     );
