@@ -4,66 +4,55 @@ import sellbuy from '../assets/sellbuy.jpg'
 import { useState } from 'react'
 import Allpost from '../components/allpost';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 const Postforsell = () => {
 
 const [productname,setproductname]=useState("");
 const [institute,setinstitute]=useState("");
-const [address,setaddress]=useState("");
-const [producttype,setproducttype]=useState("");
+const [location,setlocation]=useState("");
+// const [producttype,setproducttype]=useState("");
 const [category,setcategory]=useState("");
 const [price,setprice]=useState("");
 const [description,setdescription]=useState("");
-const [photo,setphoto]=useState([]);
-const [postdetail,setpostdetail]=useState([])
+const [photo, setPhoto] = useState([]);
+
+const handleImageChange = (e) => {
+  const selectedImage = e.target.files[0];
+  setPhoto(selectedImage);
+};
 
 
-const handleImageChange=(e)=>{
-
-  const selectedImages=Array.from(e.target.files);
-  setphoto(...selectedImages);
+const navigate=useNavigate();
 
 
-
-
-}
-
-
-
-
-const navigate = useNavigate();
-
-const handleAddpost=()=>{
+const handleAddpost=(e)=>{
    
 
 
 
-  const newPost = {
-    productname: productname,
-    institute: institute,
-    address: address,
-    category: category,
-    price: price,
-    description: description,
-    photo: photo,
-  };
+e.preventDefault();
 
-  setpostdetail((prevPostDetail) => [...prevPostDetail, newPost]);
+axios.post('http://localhost:8000/api/postforsell',{productname,institute,location,category,price,description,photo})
+.then(result=>{
 
-setproductname('');
-setinstitute('');
-setaddress('');
-setproducttype('');
-setcategory('');
-setprice('');
-setdescription('');
-setphoto([]);
+console.log(result);
+window.location.reload();//page refresh
+
+
+})
+
+.catch(err=>{console.log(err)});
+
+
+
 navigate('/project');
 
 }
-console.log(postdetail);
-<Allpost postdetail={postdetail} ></Allpost>
 
-console.log(photo);
+
+
+
+
     return (
         <div>
             <>
@@ -101,11 +90,11 @@ console.log(photo);
                 </div>
              
                 <div className="md:col-span-3">
-                  <label htmlFor="address">Institute Name</label>
+                  <label htmlFor="location">Institute Name</label>
                   <input
                     type="text"
-                    name="address"
-                    id="address"
+                    name="location"
+                    id="location"
                     className="h-10 border-solid shadow-md mt-1 rounded px-4 w-full bg-gray-50"
                     value={institute}
                     onChange={(e)=>setinstitute(e.target.value)}
@@ -119,8 +108,8 @@ console.log(photo);
                     name="city"
                     id="city"
                     className="h-10 border-solid shadow-md mt-1 rounded px-4 w-full bg-gray-50"
-                    value={address}
-                    onChange={(e)=>setaddress(e.target.value)}
+                    value={location}
+                    onChange={(e)=>setlocation(e.target.value)}
                     placeholder=""
                   />
                 </div>
@@ -171,12 +160,13 @@ console.log(photo);
   </div>
   <div>
     {Array.from(photo).map((file, index) => (
-      <img
-        key={index}
-        src={URL.createObjectURL(file)}
-        alt={`Uploaded Image ${index}`}
-        className="w-12 h-24 object-contain"
-      />
+     <img
+     key={index}
+     src={URL.createObjectURL(file)}
+     alt={`Uploaded Image ${index}`}
+     className="w-12 h-24 object-contain"
+     onChange={handleImageChange}
+    />
     ))}
   </div>
 </div>

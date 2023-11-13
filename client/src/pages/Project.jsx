@@ -4,10 +4,26 @@ import Footer from '../components/footer';
 import { Link } from 'react-router-dom';
 import Searchbar from '../components/Searchbar';
 import hlw from './hlw.png'
-import { useState } from 'react';
-const Project = ({postdetail}) => {
-
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+const Project = () => {
+  const [postdetail,setpostdetail]=useState([])
 const [selectedCategory,setSelectedCategory]=useState();
+
+
+useEffect(()=>{
+
+axios.get("http://localhost:8000/api/projects")
+.then(result=>{
+  setpostdetail(result.data);
+  console.log(result.data);
+})
+.catch(err=>console.log(err));
+
+
+},[]);
+
+
 
 const filterPosts=selectedCategory  ?  postdetail.filter(item=>item.category===selectedCategory)
 : postdetail;
@@ -27,12 +43,12 @@ const filterPosts=selectedCategory  ?  postdetail.filter(item=>item.category===s
   </h1>
   <div  className="relative mt-2" >
   <select value={selectedCategory} onChange={(e)=>setSelectedCategory(e.target.value)}    className="py-2 text-black pl-8 pr-2 w-80 mr-1 rounded-full border bg-slate-200 border-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500" >
-  <option    value="someOption">choose department </option>
-  <option value="someOption">Software Engineering</option>
-  <option value="otherOption">Electrical Engineering</option>
-  <option value="otherOption">civil</option>
-  <option value="otherOption">Architecture</option>
-  <option value="otherOption">Industial Production Engineering</option>
+  <option value=""  >choose department </option>
+  <option value="Software Engineering">Software Engineering</option>
+  <option value="Electrical Engineering">Electrical Engineering</option>
+  <option value="civil">civil</option>
+  <option value="Architecture">Architecture</option>
+  <option value="Industial Production Engineering">Industial Production Engineering</option>
 </select>
 </div>
 <Searchbar></Searchbar>
@@ -41,7 +57,7 @@ const filterPosts=selectedCategory  ?  postdetail.filter(item=>item.category===s
 
   {Array.isArray(filterPosts) && filterPosts.length>0 ? (
  filterPosts.map((item, index) => (
-    <Link to="/projectdetails" key={index}>
+    <Link to={`/projectdetails/${item._id}`} key={index}>
       {console.log(item)}
       <div className="mt-4 mx-4 ml- p-4">
         <div className="max-w-screen-lg mx-auto">
@@ -75,7 +91,7 @@ const filterPosts=selectedCategory  ?  postdetail.filter(item=>item.category===s
   <p>No posts available</p>
 )}
 
-    <Footer></Footer>
+    {/* <Footer></Footer> */}
         </div>
     );
 };

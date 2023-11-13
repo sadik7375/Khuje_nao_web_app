@@ -9,7 +9,7 @@ import ppt from '../assets/ppt.jpg'
 const Mainsection = () => {
     return (
         <div>
-               <div className="mt-22 mx-4 p-4">
+               <div className="mt-32 mx-4 p-4">
                 
       <div className="max-w-screen-lg mx-auto">
       <div className='mb-12'>
@@ -18,7 +18,7 @@ const Mainsection = () => {
     <span
       className="inline-flex h-20 pt-2 overflow-x-hidden animate-type group-hover:animate-type-reverse whitespace-nowrap text-brand-accent will-change-transform"
     >
-     Welcome to Khuje Nao 
+    Welcome to Khuje Nao
     </span>
  
   

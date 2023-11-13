@@ -12,7 +12,7 @@ const Home = () => {
             
             <Mainsection></Mainsection>
          
-           <Footer></Footer>
+           {/* <Footer></Footer> */}
             
         </div>
     );

@@ -3,12 +3,50 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/footer';
 import hlw from './hlw.png'
+import { useEffect,useState} from 'react';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 const Projectdetails = () => {
-   
-    
+  
+ const {id}=useParams(); 
+const[projectdetail,setprojectdetail]=useState();
       // Slick settings
     
+//get data depende on id
 
+useEffect(()=>{
+
+  axios.get(`http://localhost:8000/api/projects/${id}`)
+  .then(result=>{
+    setprojectdetail(result.data);
+    console.log(result.data);
+  })
+  .catch(err=>console.log(err));
+  
+  
+  },[id]);
+
+
+  if(!projectdetail)
+  {
+        return (
+
+          <div>
+          <div>
+        <Navbar />
+        <p>Loading...</p>
+       
+      </div>
+          </div>
+
+
+        )
+
+
+
+
+
+  }
 
 
 
@@ -30,17 +68,16 @@ const Projectdetails = () => {
             </div>
             {/* Right side: Project information */}
             <div className="w-3/4 p-4">
-              <h2 className="text-xl font-bold">Project Name</h2>
-              <p className="text-gray-600 font-bold">Price:1000 BDT</p>
-              <p className="text-gray-600 font-bold">Total Sale: 20+</p>
-              <p className="text-gray-600 font-bold">Institute</p>
-              <Link to='/buynow'>  <button className="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 mb-6 mt-6 px-4 rounded ml-1  ">Buy Now</button></Link>
-              <p className="text-gray-600 text-lg font-bold">Description:</p> <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor veniam laborum expedita officia numquam eos! Perspiciatis nesciunt qui autem, nulla maxime accusantium harum rem quaerat recusandae mollitia incidunt fugit sit.lorem.Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor veniam laborum expedita officia numquam eos! Perspiciatis nesciunt qui autem, nulla maxime accusantium harum rem quaerat recusandae mollitia incidunt fugit sit.lorem
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor veniam laborum expedita officia numquam eos! Perspiciatis nesciunt qui autem, nulla maxime accusantium harum rem quaerat recusandae mollitia incidunt fugit sit.lorem
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor veniam laborum expedita officia numquam eos! Perspiciatis nesciunt qui autem, nulla maxime accusantium harum rem quaerat recusandae mollitia incidunt fugit sit.lorem
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor veniam laborum expedita officia numquam eos! Perspiciatis nesciunt qui autem, nulla maxime accusantium harum rem quaerat recusandae mollitia incidunt fugit sit.lorem
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor veniam laborum expedita officia numquam eos! Perspiciatis nesciunt qui autem, nulla maxime accusantium harum rem quaerat recusandae mollitia incidunt fugit sit.lorem
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor veniam laborum expedita officia numquam eos! Perspiciatis nesciunt qui autem, nulla maxime accusantium harum rem quaerat recusandae mollitia incidunt fugit sit.lorem
+              <h2 className="text-xl font-bold">{projectdetail.productname}</h2>
+              <p className="text-gray-600 font-bold">{projectdetail.price} BDT</p>
+              <p className="text-gray-600 font-bold">Total Sale:20+</p>
+              {/* <p className="text-gray-600 font-bold">Institute{projectdetail.institute}</p> */}
+             
+              <p className="text-gray-600 font-bold">Category:{projectdetail.category}</p>
+
+              <Link    to={`/buynow/${id}`} > <button  className="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 mb-6 mt-6 px-4 rounded ml-1  ">Buy Now</button></Link>
+              <p className="text-gray-600 text-lg font-bold">Description:</p> <p>
+              {projectdetail.description}
               </p>
             </div>
          
