@@ -5,7 +5,7 @@ import { AiFillMessage } from "react-icons/ai";
 import { MdNotifications } from "react-icons/md";
 const Navbar = () => {
     return (
-        <nav className="bg-indigo-500 py-5 max-w-xs fixed top-0 right-0">
+        <nav className="bg-gray-800 py-5 max-w-xs fixed top-0 right-0">
 
 
             <div className="px-3 flex items-center justify-between mx-auto gap-x-4">

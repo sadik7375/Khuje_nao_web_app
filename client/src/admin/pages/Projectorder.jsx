@@ -137,10 +137,10 @@ const handleDelete=(id)=>{
 
       <td className="flex items-center px-6 py-4">
         <Link
-        //   to={`/confirmation/${user._id}`}
+          to={`/productinfo/${user.productref}`}
           className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
         >
-          Confirmation
+          Productinfo
         </Link>
         <a
           href="#"

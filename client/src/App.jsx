@@ -35,7 +35,8 @@ function App() {
         <Route  path="/admin" element={<Admindashbroad></Admindashbroad>} /> 
 
         <Route path='/projectorder' element={<Projectorder></Projectorder>}  /> 
-        <Route path='/sellerinfo' element={<Sellerinfo></Sellerinfo>}  />                   
+        <Route path='/productinfo/:id' element={<Sellerinfo></Sellerinfo>}  /> 
+                          
     
       </Routes>
       </BrowserRouter>

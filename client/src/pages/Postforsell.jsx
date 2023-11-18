@@ -8,8 +8,10 @@ import axios from 'axios';
 const Postforsell = () => {
 
 const [productname,setproductname]=useState("");
-const [institute,setinstitute]=useState("");
+const [name,setname]=useState("");
 const [location,setlocation]=useState("");
+const [email,setemail]=useState();
+const [phonenumber,setphonenumber]=useState();
 // const [producttype,setproducttype]=useState("");
 const [category,setcategory]=useState("");
 const [price,setprice]=useState("");
@@ -21,18 +23,26 @@ const handleImageChange = (e) => {
   setPhoto(selectedImage);
 };
 
-
+const token = localStorage.getItem('token');
 const navigate=useNavigate();
 
 
 const handleAddpost=(e)=>{
    
 
-
+  if (!token) {
+    console.error("Token not available. User is not authenticated.");
+    navigate('/signin');
+    // Handle this case as per your application's logic, such as redirecting to the login page
+    return;
+  }
 
 e.preventDefault();
 
-axios.post('http://localhost:8000/api/postforsell',{productname,institute,location,category,price,description,photo})
+axios.post('http://localhost:8000/api/postforsell',{productname,name,email,phonenumber,location,category,price,description,photo} ,{
+  headers: {
+    'Authorization': `Bearer ${token}` // Include the token in the Authorization header
+  }})
 .then(result=>{
 
 console.log(result);
@@ -90,47 +100,16 @@ navigate('/project');
                 </div>
              
                 <div className="md:col-span-3">
-                  <label htmlFor="location">Institute Name</label>
+                  <label htmlFor="location">Your Name</label>
                   <input
                     type="text"
-                    name="location"
-                    id="location"
-                    className="h-10 border-solid shadow-md mt-1 rounded px-4 w-full bg-gray-50"
-                    value={institute}
-                    onChange={(e)=>setinstitute(e.target.value)}
+                   
+                    className="h-10 border-solid shadow-md mt-1 rounded px-4 w-80 bg-gray-50"
+                    value={name}
+                    onChange={(e)=>setname(e.target.value)}
                     placeholder=""
                   />
                 </div>
-                <div className="md:col-span-2">
-                  <label htmlFor="city">Location</label>
-                  <input
-                    type="text"
-                    name="city"
-                    id="city"
-                    className="h-10 border-solid shadow-md mt-1 rounded px-4 w-full bg-gray-50"
-                    value={location}
-                    onChange={(e)=>setlocation(e.target.value)}
-                    placeholder=""
-                  />
-                </div>
-               
-                {/* <div className="md:col-span-2">
-                  <label htmlFor="state">Product Type</label>
-                  <div className="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
-                  <selectc value={producttype} onChange={(e)=>setproducttype(e.target.value)} className=" px-4 appearance-none outline-none text-gray-800 w-full bg-transparent" >
-  <option value="someOption"> Select Product Type </option>
-  <option value="someOption">Project</option>
-  <option value="otherOption">Thesis Paper</option>
-  <option value="otherOption">Project Equipment</option>
-  <option value="otherOption">Notes</option>
-  <option value="otherOption">Books</option>
-  <option value="otherOption">Presentation Slide</option>
-  <option value="otherOption">CV</option>
-</selectc>
-                    
-                  
-                  </div>
-                </div> */}
                 <div className="md:col-span-2">
                   <label htmlFor="state">Category</label>
                   <div className="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
@@ -182,6 +161,62 @@ navigate('/project');
                     value={price}
                     onChange={(e)=>setprice(e.target.value)}
                   />
+                </div>
+                
+                <div className="md:col-span-2">
+                  <label htmlFor="city">Location</label>
+                  <input
+                    type="text"
+                    name="city"
+                    id="city"
+                    className="h-10 border-solid shadow-md mt-1 rounded px-4 w-full bg-gray-50"
+                    value={location}
+                    onChange={(e)=>setlocation(e.target.value)}
+                    placeholder=""
+                  />
+                </div>
+               
+                {/* <div className="md:col-span-2">
+                  <label htmlFor="state">Product Type</label>
+                  <div className="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
+                  <selectc value={producttype} onChange={(e)=>setproducttype(e.target.value)} className=" px-4 appearance-none outline-none text-gray-800 w-full bg-transparent" >
+  <option value="someOption"> Select Product Type </option>
+  <option value="someOption">Project</option>
+  <option value="otherOption">Thesis Paper</option>
+  <option value="otherOption">Project Equipment</option>
+  <option value="otherOption">Notes</option>
+  <option value="otherOption">Books</option>
+  <option value="otherOption">Presentation Slide</option>
+  <option value="otherOption">CV</option>
+</selectc>
+                    
+                  
+                  </div>
+                </div> */}
+            
+                <div className='flex justify-between'>
+                <div className="md:col-span-3">
+                  <label htmlFor="location">Email</label>
+                  <input
+                    type="text"
+                   
+                    className="h-10 border-solid shadow-md mt-1 rounded px-4 w-80 bg-gray-50"
+                    value={email}
+                    onChange={(e)=>setemail(e.target.value)}
+                    placeholder=""
+                  />
+                </div>
+                <div className="md:col-span-3">
+                  <label htmlFor="location">Payment Number</label>
+                  <input
+                    type="text"
+                   
+                    className="h-10 border-solid shadow-md mt-1 rounded px-4 w-80 bg-gray-50"
+                    value={phonenumber}
+                    onChange={(e)=>setphonenumber(e.target.value)}
+                    placeholder=""
+                  />
+                </div>
                 </div>
                 <div className="md:col-span-5">
                   <label htmlFor="email">Description</label>

@@ -1,8 +1,41 @@
-
+import React, { useState } from 'react';
 import Footer from '../components/footer';
 import { Link } from 'react-router-dom';
-
+import { FcGoogle } from "react-icons/fc";
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 const Signin = () => {
+  const navigate = useNavigate();
+  const [email,setemail]=useState();
+  const [password,setpassword]=useState();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  
+    axios
+    .post("http://localhost:8000/api/signin", { email, password })
+    .then((response) => {
+       
+      if (response) {
+       console.log(response);
+       
+        navigate('/');
+        localStorage.setItem('token',response.data.token)
+       
+     
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  };
+  // setTimeout(() => {
+  //   localStorage.removeItem('token');
+
+  // }, 50000); 
+
+
+
     return (
         <div>
 
@@ -34,7 +67,7 @@ const Signin = () => {
       <div>
         <label  className="block text-sm font-medium leading-6 text-gray-900">Email address</label>
         <div className="mt-2">
-          <input id="email" name="email" type="email"  required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+          <input onChange={(e)=>{setemail(e.target.value)}} id="email" name="email" type="email"  required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
         </div>
       </div>
 
@@ -46,14 +79,19 @@ const Signin = () => {
           </div>
         </div>
         <div className="mt-2">
-          <input id="password" name="password" type="password" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+          <input onChange={(e)=>setpassword(e.target.value)} id="password" name="password" type="password" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
         </div>
       </div>
 
       <div>
-        <button type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign in</button>
+        <button onClick={handleSubmit} type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign in</button>
       </div>
     </form>
+    <div className="flex justify-center mt-8 gap-2 bg-white cursor-pointer w-50 pt-2 font-bold-medium text-black hover:bg-indigo-500 hover:text-white focus:ring-4 md:mx-3 focus:outline-none focus:ring-primary-300 font-sm rounded-lg text-sm px-2 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+    <span className="text-[2rem] mt-2"><FcGoogle /></span>
+    <p className='mt-3'>Login with Google</p>
+</div>
+ 
 
     <p className="mt-10 text-center text-sm text-gray-500">
       Do not have account?

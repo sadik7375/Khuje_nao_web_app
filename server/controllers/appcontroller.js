@@ -1,16 +1,101 @@
 const productModel = require('../model/productModel');
 const orderModel = require('../model/orderconfirmModel');
+const authenticationModel = require('../model/authentication')
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+
+//athentication
+
+function signup(req, res) {
+    const { name, email, password } = req.body;
+
+    bcrypt.hash(password, 10, (err, hash) => {
+        if (err) {
+            res.status(500).json({ error: "Internal Server Error1" });
+        } else {
+            // Create a new user with the hashed password
+            const newUser = new authenticationModel({
+                name: name,
+                email: email,
+                password: hash,
+                // Store the hashed password in the database
+            });
+
+            // Save the user to the database
+            newUser.save()
+                .then(() => {
+                    res.json({ success: "User registered successfully" });
+                })
+                .catch((err) => {
+                    console.log(err);
+                    res.status(500).json({ error: "Internal Server Error" });
+                });
+        }
+    });
+
+
+
+
+
+
+}
+
+
+//login function
+
+// Find the user by email
+
+function signin(req, res) {
+    const { email, password } = req.body;
+
+    // Find the user by email
+    authenticationModel.findOne({ email: email })
+        .then((user) => {
+            if (!user) {
+                return res.status(404).json({ error: "User not found" });
+            }
+
+            // Compare the provided password with the stored hashed password
+            bcrypt.compare(password, user.password, (err, result) => {
+                if (err || !result) {
+                    return res.status(401).json({ error: "Invalid credentials" });
+                }
+
+                // Generate a JWT token
+                const token = jwt.sign({ userId: user._id, email: user.email }, 'qsakljhhhutrdfglkijh', { expiresIn: '1d' }, { httpOnly: true });
+                // savetoken(token);
+
+                // Send the token in the response
+                res.json({ token: token });
+                // res.json({ success: "login successfully done" });
+            });
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({ error: "Internal Server Error" });
+        });
+}
+
+
+
+
+
+
+
 
 //sell post function
 function postforsell(req, res) {
 
-    const { productname, institute, location, category, price, description, photo } = req.body;
+    const { productname, name, email, phonenumber, location, category, price, description, photo } = req.body;
 
     const product = new productModel(
 
         {
             productname: productname,
-            institute: institute,
+            name: name,
+            email: email,
+            phonenumber: phonenumber,
             location: location,
             category: category,
             photo: photo,
@@ -140,4 +225,30 @@ async function deleteorder(req, res) {
 
 }
 
-module.exports = { postforsell, projects, projectdetails, orderconfirm, orderinfo, deleteorder }
+
+
+//authentication function
+//token  
+function verifyToken(req, res, next) {
+    const { authorization } = req.headers;
+
+    if (authorization && authorization.startsWith('Bearer')) {
+        try {
+            const token = authorization.split(' ')[1];
+            const { userId } = jwt.verify(token, 'qsakljhhhutrdfglkijh');
+            req.user = authenticationModel.findById(userId).select('-password');
+            next();
+        } catch (error) {
+            console.log(error);
+            res.status(401).send({ "status": "failed", "message": "Unauthorized user" });
+        }
+    } else {
+        res.status(401).send({ "status": "failed", "message": "Unauthorized user" });
+    }
+}
+
+
+
+
+
+module.exports = { postforsell, projects, projectdetails, orderconfirm, orderinfo, deleteorder, signup, signin, verifyToken }
