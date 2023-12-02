@@ -69,8 +69,8 @@ useEffect(()=>{
             {/* Right side: Project information */}
             <div className="w-3/4 p-4">
               <h2 className="text-xl font-bold">{projectdetail.productname}</h2>
-              <p className="text-gray-600 font-bold">{projectdetail.price} BDT</p>
-              <p className="text-gray-600 font-bold">Total Sale:20+</p>
+              <p className="text-gray-600 font-bold">{projectdetail.price} Taka</p>
+              <p className="text-gray-600 font-bold">Total Sale:200+</p>
               {/* <p className="text-gray-600 font-bold">Institute{projectdetail.institute}</p> */}
              
               <p className="text-gray-600 font-bold">Category:{projectdetail.category}</p>

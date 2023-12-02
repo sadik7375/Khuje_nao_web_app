@@ -11,6 +11,7 @@ const { verifyToken } = require('../controllers/appcontroller');
 router.route('/projects').get(controller.projects);
 router.route('/projects/:id').get(controller.projectdetails);
 router.route('/orderinfo').get(controller.orderinfo);
+router.route('/uploadedproducts/:id').get(controller.useruploadedproduct);
 
 
 

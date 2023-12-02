@@ -1,5 +1,5 @@
 import React from 'react';
-import Project from '../pages/Project';
+import Project from '../pages/project/Project';
 
 const Allpost = ({postdetail}) => {
     return (

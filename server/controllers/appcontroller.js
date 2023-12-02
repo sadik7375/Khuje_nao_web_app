@@ -10,35 +10,41 @@ const jwt = require('jsonwebtoken');
 function signup(req, res) {
     const { name, email, password } = req.body;
 
-    bcrypt.hash(password, 10, (err, hash) => {
-        if (err) {
-            res.status(500).json({ error: "Internal Server Error1" });
-        } else {
-            // Create a new user with the hashed password
-            const newUser = new authenticationModel({
-                name: name,
-                email: email,
-                password: hash,
-                // Store the hashed password in the database
-            });
+    // Check if the email already exists in the database
+    authenticationModel.findOne({ email: email })
+        .then((existingUser) => {
+            if (existingUser) {
+                // Email already exists, return an error response
+                return res.status(400).json({ error: "Email already exists" });
+            }
 
-            // Save the user to the database
-            newUser.save()
-                .then(() => {
-                    res.json({ success: "User registered successfully" });
-                })
-                .catch((err) => {
-                    console.log(err);
-                    res.status(500).json({ error: "Internal Server Error" });
+            // Email is unique, proceed with hashing and saving the new user
+            bcrypt.hash(password, 10, (err, hash) => {
+                if (err) {
+                    return res.status(501).json({ error: "Internal Server Error" });
+                }
+
+                const newUser = new authenticationModel({
+                    name: name,
+                    email: email,
+                    password: hash,
                 });
-        }
-    });
 
-
-
-
-
-
+                // Save the new user to the database
+                newUser.save()
+                    .then(() => {
+                        res.json({ success: "User registered successfully" });
+                    })
+                    .catch((saveErr) => {
+                        console.error(saveErr);
+                        res.status(500).json({ error: "Internal Server Error" });
+                    });
+            });
+        })
+        .catch((findErr) => {
+            console.error(findErr);
+            res.status(500).json({ error: "Internal Server Error" });
+        });
 }
 
 
@@ -63,11 +69,11 @@ function signin(req, res) {
                 }
 
                 // Generate a JWT token
-                const token = jwt.sign({ userId: user._id, email: user.email }, 'qsakljhhhutrdfglkijh', { expiresIn: '1d' }, { httpOnly: true });
+                const token = jwt.sign({ userId: user._id, email: user.email, name: user.name }, 'qsakljhhhutrdfglkijh', { expiresIn: '1d' }, { httpOnly: true });
                 // savetoken(token);
 
                 // Send the token in the response
-                res.json({ token: token });
+                res.json({ token: token, email: email });
                 // res.json({ success: "login successfully done" });
             });
         })
@@ -249,6 +255,14 @@ function verifyToken(req, res, next) {
 
 
 
+function useruploadedproduct(req, res) {
 
 
-module.exports = { postforsell, projects, projectdetails, orderconfirm, orderinfo, deleteorder, signup, signin, verifyToken }
+
+
+}
+
+
+
+
+module.exports = { postforsell, projects, projectdetails, orderconfirm, orderinfo, deleteorder, signup, signin, verifyToken, useruploadedproduct }

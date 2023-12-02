@@ -9,16 +9,16 @@ import ppt from '../assets/ppt.jpg'
 const Mainsection = () => {
     return (
         <div>
-               <div className="mt-32 mx-4 p-4">
+               <div className="mt-12 mx-4 p-4">
                 
       <div className="max-w-screen-lg mx-auto">
       <div className='mb-12'>
       <h1 className="mb-1 font-mono text-2xl text-gray-800 md:text-4xl">
    
     <span
-      className="inline-flex h-20 pt-2 overflow-x-hidden animate-type group-hover:animate-type-reverse whitespace-nowrap text-brand-accent will-change-transform"
+      className="inline-flex mt-12  h-20 pt-2 overflow-x-hidden animate-type group-hover:animate-type-reverse whitespace-nowrap text-brand-accent will-change-transform"
     >
-    Welcome to Khuje Nao
+    Welcome to Khuje Nao.com
     </span>
  
   

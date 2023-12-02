@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import Footer from '../components/footer';
 import { Link } from 'react-router-dom';
-import { FcGoogle } from "react-icons/fc";
+import { toast} from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Profile from './profile/Profile';
+import GoogleSignInButton from '../components/GoogleSignInButton';
 const Signin = () => {
   const navigate = useNavigate();
   const [email,setemail]=useState();
   const [password,setpassword]=useState();
+  const [token,settoken]=useState();
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,12 +25,20 @@ const Signin = () => {
        
         navigate('/');
         localStorage.setItem('token',response.data.token)
-       
+        settoken(response.data.token);
+        // setemail(response.data.email)
      
       }
     })
     .catch((error) => {
       console.log(error);
+      if(error.response.status==404)
+      {
+        toast.error('Email not found', { autoClose: 3000 });  
+      }
+
+
+
     });
   };
   // setTimeout(() => {
@@ -38,10 +50,6 @@ const Signin = () => {
 
     return (
         <div>
-
-{/* NAVBAR START */}
-
-
 <nav className="bg-gray-800 p-4 flex items-center justify-between fixed w-full top-0 z-10">
       <div className="flex items-center space-x-2 ml-40">
      
@@ -55,50 +63,69 @@ const Signin = () => {
 
 
 {/* NAVBAR END */}
-
-            <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 bg-gray-100 mt-32  ">
-  <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-   
-    <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign in to your account</h2>
-  </div>
-
-  <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form className="space-y-6" action="#" method="POST">
-      <div>
-        <label  className="block text-sm font-medium leading-6 text-gray-900">Email address</label>
-        <div className="mt-2">
-          <input onChange={(e)=>{setemail(e.target.value)}} id="email" name="email" type="email"  required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
-        </div>
-      </div>
-
-      <div>
-        <div className="flex items-center justify-between">
-          <label  className="block text-sm font-medium leading-6 text-gray-900">Password</label>
-          <div className="text-sm">
-            <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</a>
+<>
+  {/* component */}
+  <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
+    <div className="relative py-3 sm:max-w-xl sm:mx-auto">
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-300 to-blue-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
+      <div className="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
+        <div className="max-w-md mx-auto">
+          <div>
+            <h1 className="text-3xl font-semibold">
+              Login Your Account
+            </h1>
+          </div>
+          <div className="divide-y divide-gray-200">
+            <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+              <div className="relative">
+                <input
+                  autoComplete="off"
+                  id="email"
+                  name="email"
+                  type="text"
+                  className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
+                  placeholder="Email address"
+                  onChange={(e)=>{setemail(e.target.value)}}
+                />
+                <label
+                  htmlFor="email"
+                  className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+                >
+                  Email Address
+                </label>
+              </div>
+              <div className="relative">
+                <input
+                  autoComplete="off"
+                  id="password"
+                  name="password"
+                  type="password"
+                  className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
+                  placeholder="Password"
+                  onChange={(e)=>setpassword(e.target.value)}
+                />
+                <label
+                  htmlFor="password"
+                  className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+                >
+                  Password
+                </label>
+              </div>
+              <div className="relative">
+                <button onClick={handleSubmit} className="bg-blue-500 text-white rounded-md px-2 py-1">
+                 Login
+                </button>
+                <GoogleSignInButton></GoogleSignInButton>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="mt-2">
-          <input onChange={(e)=>setpassword(e.target.value)} id="password" name="password" type="password" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
-        </div>
       </div>
-
-      <div>
-        <button onClick={handleSubmit} type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign in</button>
-      </div>
-    </form>
-    <div className="flex justify-center mt-8 gap-2 bg-white cursor-pointer w-50 pt-2 font-bold-medium text-black hover:bg-indigo-500 hover:text-white focus:ring-4 md:mx-3 focus:outline-none focus:ring-primary-300 font-sm rounded-lg text-sm px-2 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-    <span className="text-[2rem] mt-2"><FcGoogle /></span>
-    <p className='mt-3'>Login with Google</p>
-</div>
- 
-
-    <p className="mt-10 text-center text-sm text-gray-500">
-      Do not have account?
-      <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">SignUp</a>
-    </p>
+    </div>
   </div>
-</div> 
+</>
+
+          
 <Footer></Footer>
         </div>
     );
