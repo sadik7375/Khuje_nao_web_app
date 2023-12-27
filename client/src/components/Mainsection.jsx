@@ -6,6 +6,7 @@ import projectequipment from '../assets/projectequipment.png'
 import notes from '../assets/notes.jpg'
 import books from '../assets/books.png'
 import ppt from '../assets/ppt.jpg'
+import hire from '../assets/hire.jpg'
 const Mainsection = () => {
     return (
         <div>
@@ -54,6 +55,29 @@ const Mainsection = () => {
             </div>
           </div>
           </Link>
+
+
+
+
+          <Link to="/hireforhelp"> <div className="bg-white shadow-lg p-4 rounded-lg">
+            <div className="flex items-center">
+              <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
+                <i className="fa fa-icon"><img
+                  src={hire}
+                  alt="Project Photo"
+                  className='roundded-full'
+                /></i>
+              </div>
+              <div className="ml-4">
+                <h3 className="text-xl font-bold">Hire For Project</h3>
+                <p className="text-gray-600">200+ Developer</p>
+              </div>
+            </div>
+          </div>
+          </Link>
+
+
+
 
          <Link to="/thesispaper"> <div className="bg-white shadow-lg p-4 rounded-lg">
             <div className="flex items-center">
@@ -109,7 +133,7 @@ const Mainsection = () => {
           </div>
           </Link>
 
-         <Link to="books"><div className="bg-white shadow-lg p-4 rounded-lg">
+         {/* <Link to="books"><div className="bg-white shadow-lg p-4 rounded-lg">
             <div className="flex items-center">
               <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
                 <i className="fa fa-icon"><img
@@ -124,7 +148,7 @@ const Mainsection = () => {
               </div>
             </div>
           </div>
-          </Link> 
+          </Link>  */}
 
         <Link to="presentationsilde">  <div className="bg-white shadow-lg p-4 rounded-lg">
             <div className="flex items-center">

@@ -3,6 +3,9 @@ const orderModel = require('../model/orderconfirmModel');
 const authenticationModel = require('../model/authentication')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const multer = require("multer");
+const path = require("path");
+
 
 
 //athentication
@@ -90,7 +93,18 @@ function signin(req, res) {
 
 
 
-//sell post function
+//---------------------------sell post function---------------------
+
+// --------------------photo uplaod--------------------------
+
+
+
+
+
+
+
+
+
 function postforsell(req, res) {
 
     const { productname, name, email, phonenumber, location, category, price, description, photo } = req.body;
@@ -104,7 +118,7 @@ function postforsell(req, res) {
             phonenumber: phonenumber,
             location: location,
             category: category,
-            photo: photo,
+            // photo: req.file.filename,
             price: price,
             description: description
 
@@ -125,6 +139,13 @@ function postforsell(req, res) {
 
 
 }
+
+
+
+//---------------------------sell post function finish---------------------
+
+
+
 
 //get api for projects
 async function projects(req, res) {

@@ -25,6 +25,9 @@ const UserSchema = new mongoose.Schema({
         type: String,
         unique: false,
     },
+
+
+
     price: {
         type: String,
         unique: false,

@@ -4,9 +4,47 @@ import Footer from '../components/footer';
 import hlw from './hlw.png'
 import { Link } from 'react-router-dom';
 import Searchbar from '../components/Searchbar';
+import { useState } from 'react';
 const Thesispaper = () => {
+
+  const [image,setimage]=useState();
+
+  const submitImage=(e)=>{
+  
+    e.preventDefault();
+
+     const formData=new FormData();
+     formData.append("image",image);
+
+};
+
+const onInputChange=(e)=>{
+
+console.log(e.target.files[0]);
+setimage(e.target.files[0]);
+
+}
+
+
     return (
         <div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
             <Navbar></Navbar>
             <div className='mb-4 ml-5 flex justify-center mt-32 gap-3'>
       <h1 className="mb-1 font-mono text-2xl text-gray-800 md:text-4xl">
@@ -18,7 +56,26 @@ const Thesispaper = () => {
     </span>
   
   </h1>
+
+  <form>
+  <input type='file' accept="image/*" onChange={onInputChange} />
+  <button type='submit'>Submit</button>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
   <div  className="relative mt-2" >
+
+    
   <select className="py-2 text-black pl-8 pr-2 w-80 mr-1 rounded-full border bg-slate-200 border-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500" >
   <option value="someOption">choose department </option>
   <option value="someOption">Software Engineering</option>
@@ -30,6 +87,13 @@ const Thesispaper = () => {
   <option value="otherOption">BBA</option>
 </select>
 </div>
+
+
+
+
+
+
+
 <Searchbar></Searchbar>
   </div>
   

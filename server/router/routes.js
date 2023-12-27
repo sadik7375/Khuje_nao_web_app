@@ -2,7 +2,9 @@ const { Router } = require("express"); //Router class
 const router = Router(); //Router class router object
 const controller = require('../controllers/appcontroller');
 const { verifyToken } = require('../controllers/appcontroller');
-
+const { fileMiddleware } = require('../controllers/appcontroller');
+const multer = require("multer");
+const path = require("path");
 
 
 
@@ -16,7 +18,7 @@ router.route('/uploadedproducts/:id').get(controller.useruploadedproduct);
 
 
 //post routes
-router.route('/postforsell').post(verifyToken, controller.postforsell);
+router.route('/postforsell').post(controller.postforsell);
 router.route('/oderconfirm').post(controller.orderconfirm);
 router.route('/signup').post(controller.signup);
 router.route('/signin').post(controller.signin);
@@ -25,6 +27,33 @@ router.route('/signin').post(controller.signin);
 
 //delete routes
 router.route('/deleteorder/:id').delete(controller.deleteorder);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
